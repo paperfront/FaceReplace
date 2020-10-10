@@ -1,4 +1,4 @@
-from detect_face import write_all_faces
+from face_write import write_all_faces
 
 if __name__ == "__main__":
-    write_all_faces('crowd.jpg', 'samy_2.png')
+    write_all_faces('avengers.jpg', 'samy_2.png')
