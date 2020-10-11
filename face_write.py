@@ -4,13 +4,22 @@ import cv2
 import sys
 import os
 import traceback
+from PIL import Image
+
+sys.path.insert(1, 'background_remove/')
+
+from background_remove.demo.background_remove import remove_background
+
+
 
 CASCADE="Face_cascade.xml"
 FACE_CASCADE=cv2.CascadeClassifier(CASCADE)
 
 def get_faces(background):
+	SCALE_FACTOR = 25.0 / 500.0
 	image_grey=cv2.cvtColor(background,cv2.COLOR_BGR2GRAY)
-	return FACE_CASCADE.detectMultiScale(image_grey,scaleFactor=1.16,minNeighbors=5,minSize=(25,25),flags=0)
+	size = int(min(background.shape[0], background.shape[1]) * SCALE_FACTOR)
+	return FACE_CASCADE.detectMultiScale(image_grey,scaleFactor=1.1,minNeighbors=5,minSize=(size,size),flags=0)
 
 
 
@@ -25,18 +34,36 @@ def write_input_face(background, input, x1, x2, y1, y2):
 def bounds_from_face(face):
 	return (face[1]-10, face[1]+face[3]+10, face[0]-10, face[0]+face[2]+10)
 
+def get_bounds_no_const(face):
+	return (face[1], face[1]+face[3], face[0], face[0]+face[2])
 
-def write_all_faces(background_path, input_path):
+def add_alpha(input_path):
+	img = Image.open(input_path)
+	if img.mode == "RGB":
+		a_channel = Image.new('L', img.size, 255)   # 'L' 8-bit pixels, black and white
+		img.putalpha(a_channel)
+	new_path = input_path.split('.')[0] + '.png'
+	img.save(new_path)
+	return new_path
+
+def write_all_faces(background_path, input_path, extract=False):
 
 	if not "Extracted" in os.listdir("."):
 		os.mkdir("Extracted")
 
+	input_path = remove_background(input_path)
+
+
 	background_image=cv2.imread(background_path)
 	input_image = cv2.imread(input_path, -1)
-	input_image_faces = get_faces(input_image)
-	face = input_image_faces[0]
-	a,b,c,d = bounds_from_face(face)
-	input_image = input_image[a:b,c:d]
+	if extract:
+		input_image_faces = get_faces(input_image)
+		face = input_image_faces[0]
+		a,b,c,d = bounds_from_face(face)
+		input_image = input_image[a:b,c:d,:]
+		a,b,c,d = get_bounds_no_const(face)
+		testing_input = input_image[a:b,c:d,:]
+		cv2.imwrite('test_face.png', testing_input)
 
 	faces = get_faces(background_image)
 

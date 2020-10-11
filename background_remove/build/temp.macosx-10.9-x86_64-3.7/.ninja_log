@@ -1,0 +1,4 @@
+# ninja log v5
+1	7009	1602375387640777938	/Users/matthewlacayo/FaceReplace/background_remove/build/temp.macosx-10.9-x86_64-3.7/Users/matthewlacayo/FaceReplace/background_remove/maskrcnn_benchmark/csrc/cpu/ROIAlign_cpu.o	bb14dd97d68baf8f
+1	7061	1602375387693419447	/Users/matthewlacayo/FaceReplace/background_remove/build/temp.macosx-10.9-x86_64-3.7/Users/matthewlacayo/FaceReplace/background_remove/maskrcnn_benchmark/csrc/cpu/nms_cpu.o	b03f9b87cba4f3ba
+0	10468	1602375391058282879	/Users/matthewlacayo/FaceReplace/background_remove/build/temp.macosx-10.9-x86_64-3.7/Users/matthewlacayo/FaceReplace/background_remove/maskrcnn_benchmark/csrc/vision.o	f164eda42cd1f09e
