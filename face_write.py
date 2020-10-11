@@ -74,18 +74,7 @@ def write_all_faces(background_path, input_path, extract=False):
 		write_input_face(background_image, resized_input, x1, x2, y1, y2)
 	cv2.imwrite('test_result.jpg', background_image)
 
-def samify(background_path):
-	background_image=cv2.imread(background_path)
-	input_image = cv2.imread('samy_2.png', -1)
 
-	faces = get_faces(background_image)
-
-	for face in faces:
-		y1, y2, x1, x2 = bounds_from_face(face)
-		dims = (x2 - x1, y2 - y1)
-		resized_input = cv2.resize(input_image, dims)
-		write_input_face(background_image, resized_input, x1, x2, y1, y2)
-	cv2.imwrite('test_result.jpg', background_image)
 
 def get_images(image_path):
 
